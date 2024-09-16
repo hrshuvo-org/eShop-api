@@ -26,21 +26,32 @@ public abstract class AppModelBuilder
             b.ToTable(SetTableName("products"));
             b.Property(e => e.Name).IsRequired().HasMaxLength(250);
             b.Property(e => e.Category).HasMaxLength(100);   
-            b.Property(e => e.Brand).HasMaxLength(100);   
-            b.Property(e => e.DiscountInfo).HasMaxLength(100);
+            // b.Property(e => e.Brand).HasMaxLength(100);   
+            // b.Property(e => e.DiscountInfo).HasMaxLength(100);
             b.Property(e => e.PhotoUrl).HasMaxLength(250);
             b.Property(e => e.Description).HasMaxLength(500);
             b.Property(e => e.Specification).HasMaxLength(1000);
         });
 
+        builder.Entity<ProductItem>(b =>
+        {
+            b.ToTable(SetTableName("product_items"));
+            b.Property(e => e.Name).IsRequired().HasMaxLength(250);
+            
+            b.Property(e => e.Product).HasMaxLength(250);   
+            b.Property(e => e.Sku).HasMaxLength(100);
+            
+            b.Property(e => e.PhotoUrl).HasMaxLength(250);
+        });
+
         builder.Entity<Review>(b =>
         {
-            b.ToTable(SetTableName("products_reviews"));
+            b.ToTable(SetTableName("product_reviews"));
         });
 
         builder.Entity<ReviewReply>(b =>
         {
-            b.ToTable(SetTableName("products_review_replies"));
+            b.ToTable(SetTableName("product_review_replies"));
         });
 
 

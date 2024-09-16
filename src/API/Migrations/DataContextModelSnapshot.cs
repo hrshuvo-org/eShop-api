@@ -56,19 +56,6 @@ namespace API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    b.Property<int>("Available")
-                        .HasColumnType("int");
-
-                    b.Property<int>("AvailableStatus")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Brand")
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
-
-                    b.Property<long>("BrandId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("Category")
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
@@ -83,19 +70,6 @@ namespace API.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("varchar(500)");
 
-                    b.Property<decimal>("DiscountFlat")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("DiscountInfo")
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
-
-                    b.Property<int>("DiscountPercentage")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DiscountType")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(250)
@@ -104,12 +78,6 @@ namespace API.Migrations
                     b.Property<string>("PhotoUrl")
                         .HasMaxLength(250)
                         .HasColumnType("varchar(250)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("PriceAfterDiscount")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<float>("Rating")
                         .HasColumnType("float");
@@ -127,6 +95,52 @@ namespace API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("shop_products", (string)null);
+                });
+
+            modelBuilder.Entity("Framework.App.Models.Entities.ProductItem", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreatedTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("varchar(250)");
+
+                    b.Property<string>("PhotoUrl")
+                        .HasMaxLength(250)
+                        .HasColumnType("varchar(250)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Product")
+                        .HasMaxLength(250)
+                        .HasColumnType("varchar(250)");
+
+                    b.Property<long>("ProductId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("QtyStock")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Sku")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("shop_product_items", (string)null);
                 });
 
             modelBuilder.Entity("Framework.App.Models.Entities.Review", b =>
@@ -157,7 +171,7 @@ namespace API.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("shop_products_reviews", (string)null);
+                    b.ToTable("shop_product_reviews", (string)null);
                 });
 
             modelBuilder.Entity("Framework.App.Models.Entities.ReviewReply", b =>
@@ -185,7 +199,7 @@ namespace API.Migrations
 
                     b.HasIndex("ReviewId");
 
-                    b.ToTable("shop_products_review_replies", (string)null);
+                    b.ToTable("shop_product_review_replies", (string)null);
                 });
 
             modelBuilder.Entity("Framework.Core.Models.Entities.AppRole", b =>

@@ -7,23 +7,56 @@ using MySql.EntityFrameworkCore.Metadata;
 namespace API.Migrations
 {
     /// <inheritdoc />
-    public partial class AddProduct : Migration
+    public partial class AddProductItem : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "ParentCategory",
-                table: "shop_categories",
-                type: "longtext",
-                nullable: true);
+            migrationBuilder.DropColumn(
+                name: "Discriminator",
+                table: "AspNetUserRoles");
 
-            migrationBuilder.AddColumn<long>(
-                name: "ParentCategoryId",
-                table: "shop_categories",
-                type: "bigint",
-                nullable: false,
-                defaultValue: 0L);
+            migrationBuilder.CreateTable(
+                name: "shop_categories",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    ParentCategoryId = table.Column<long>(type: "bigint", nullable: false),
+                    ParentCategory = table.Column<string>(type: "longtext", nullable: true),
+                    Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
+                    CreatedTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    UpdatedTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_shop_categories", x => x.Id);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "shop_product_items",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    ProductId = table.Column<long>(type: "bigint", nullable: false),
+                    Product = table.Column<string>(type: "varchar(250)", maxLength: 250, nullable: true),
+                    Sku = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    QtyStock = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    PhotoUrl = table.Column<string>(type: "varchar(250)", maxLength: 250, nullable: true),
+                    Name = table.Column<string>(type: "varchar(250)", maxLength: 250, nullable: false),
+                    CreatedTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    UpdatedTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_shop_product_items", x => x.Id);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
                 name: "shop_products",
@@ -33,18 +66,8 @@ namespace API.Migrations
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     CategoryId = table.Column<long>(type: "bigint", nullable: false),
                     Category = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
-                    BrandId = table.Column<long>(type: "bigint", nullable: false),
-                    Brand = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     Description = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: true),
                     Rating = table.Column<float>(type: "float", nullable: false),
-                    DiscountType = table.Column<int>(type: "int", nullable: false),
-                    DiscountPercentage = table.Column<int>(type: "int", nullable: false),
-                    DiscountFlat = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    DiscountInfo = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    PriceAfterDiscount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    AvailableStatus = table.Column<int>(type: "int", nullable: false),
-                    Available = table.Column<int>(type: "int", nullable: false),
                     PhotoUrl = table.Column<string>(type: "varchar(250)", maxLength: 250, nullable: true),
                     Specification = table.Column<string>(type: "varchar(1000)", maxLength: 1000, nullable: true),
                     Name = table.Column<string>(type: "varchar(250)", maxLength: 250, nullable: false),
@@ -59,7 +82,7 @@ namespace API.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "shop_products_reviews",
+                name: "shop_product_reviews",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
@@ -73,9 +96,9 @@ namespace API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_shop_products_reviews", x => x.Id);
+                    table.PrimaryKey("PK_shop_product_reviews", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_shop_products_reviews_shop_products_ProductId",
+                        name: "FK_shop_product_reviews_shop_products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "shop_products",
                         principalColumn: "Id",
@@ -84,7 +107,7 @@ namespace API.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "shop_products_review_replies",
+                name: "shop_product_review_replies",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
@@ -97,24 +120,24 @@ namespace API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_shop_products_review_replies", x => x.Id);
+                    table.PrimaryKey("PK_shop_product_review_replies", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_shop_products_review_replies_shop_products_reviews_ReviewId",
+                        name: "FK_shop_product_review_replies_shop_product_reviews_ReviewId",
                         column: x => x.ReviewId,
-                        principalTable: "shop_products_reviews",
+                        principalTable: "shop_product_reviews",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_shop_products_review_replies_ReviewId",
-                table: "shop_products_review_replies",
+                name: "IX_shop_product_review_replies_ReviewId",
+                table: "shop_product_review_replies",
                 column: "ReviewId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_shop_products_reviews_ProductId",
-                table: "shop_products_reviews",
+                name: "IX_shop_product_reviews_ProductId",
+                table: "shop_product_reviews",
                 column: "ProductId");
         }
 
@@ -122,21 +145,27 @@ namespace API.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "shop_products_review_replies");
+                name: "shop_categories");
 
             migrationBuilder.DropTable(
-                name: "shop_products_reviews");
+                name: "shop_product_items");
+
+            migrationBuilder.DropTable(
+                name: "shop_product_review_replies");
+
+            migrationBuilder.DropTable(
+                name: "shop_product_reviews");
 
             migrationBuilder.DropTable(
                 name: "shop_products");
 
-            migrationBuilder.DropColumn(
-                name: "ParentCategory",
-                table: "shop_categories");
-
-            migrationBuilder.DropColumn(
-                name: "ParentCategoryId",
-                table: "shop_categories");
+            migrationBuilder.AddColumn<string>(
+                name: "Discriminator",
+                table: "AspNetUserRoles",
+                type: "varchar(34)",
+                maxLength: 34,
+                nullable: false,
+                defaultValue: "");
         }
     }
 }
