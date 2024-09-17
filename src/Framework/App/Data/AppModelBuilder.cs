@@ -16,9 +16,24 @@ public abstract class AppModelBuilder
             b.ToTable(SetTableName("categories"));
             b.HasKey(c => c.Id);
             
-            // b.Property(e => e.ParentCategory).HasMaxLength(100);   
+            b.Property(e => e.ParentCategory).HasMaxLength(100);   
             
             b.Property(e => e.Name).IsRequired().HasMaxLength(100);
+        });
+
+        builder.Entity<Variation>(b =>
+        {
+            b.ToTable(SetTableName("variations"));
+            
+            b.Property(e => e.Name).IsRequired().HasMaxLength(100);
+            b.Property(e => e.Name).HasMaxLength(100);
+        });
+
+        builder.Entity<VariationOption>(b =>
+        {
+            b.ToTable(SetTableName("variation_options"));
+            b.Property(e => e.Name).HasMaxLength(100);
+            b.Property(e => e.Value).HasMaxLength(100).IsRequired();
         });
 
         builder.Entity<Product>(b =>
