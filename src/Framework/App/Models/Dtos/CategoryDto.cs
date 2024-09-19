@@ -6,4 +6,6 @@ public class CategoryDto
     public string Name { get; set; }
     public long? ParentCategoryId { get; set; }
     public int Status { get; set; }
+
+    public List<VariationDto> Variations { get; set; } = [];
 }

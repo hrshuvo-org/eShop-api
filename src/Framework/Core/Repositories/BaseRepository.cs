@@ -48,9 +48,13 @@ public class BaseRepository<TEntity, TId> : IBaseRepository<TEntity, TId> where 
         return await ExecuteQueryAsync(tempDbSet);
     }
 
-    public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> filter, bool? withDeleted)
+    public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> filter, bool? withDeleted, bool asNoTracking = false)
     {
         var queryable = Query(withDeleted:withDeleted).Where(filter);
+        
+        if (asNoTracking)
+            queryable = queryable.AsNoTracking();
+        
         var entity = await ExecuteQueryAsync(queryable);
         return entity!;
     }

@@ -11,7 +11,7 @@ public interface IBaseRepository<TEntity, TId> where TEntity : IBaseEntity<TId>
 
     Task<TEntity> GetAsync(TId id, List<string> includeProperties = null, bool withDeleted = false);
     Task<TEntity> GetAsync(string name, List<string> includeProperties = null, bool withDeleted = false);
-    Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> filter, bool? withDeleted = null);
+    Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> filter, bool? withDeleted = null, bool asNoTracking = false);
     Task<List<TEntity>> LoadAsync(Expression<Func<TEntity, bool>> filter, bool? withDeleted = null);
     Task<PagedList<TEntity>> LoadAsync(string qtx = null!, int page = 1, int size = 10,  int? status=null, bool withDeleted = false);
 

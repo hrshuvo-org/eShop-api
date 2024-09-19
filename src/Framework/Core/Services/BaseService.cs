@@ -30,9 +30,9 @@ public class BaseService<TEntity, TId>: IBaseService<TEntity, TId> where TEntity
         return await _repo.GetAsync(name, includeProperties, withDeleted);
     }
 
-    public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> filter, bool withDeleted = false)
+    public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> filter, bool withDeleted = false, bool asNoTracking = false)
     {
-        return await _repo.GetAsync(filter, withDeleted);
+        return await _repo.GetAsync(filter, withDeleted, asNoTracking);
     }
 
     public async Task<List<TEntity>> LoadAsync(Expression<Func<TEntity, bool>> filter, bool withDeleted = false)
