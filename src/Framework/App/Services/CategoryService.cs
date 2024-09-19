@@ -18,8 +18,7 @@ public class CategoryService : BaseService<Category, long>, ICategoryService
         var categoryExists =  await GetAsync(dto.Name);
         
         if(categoryExists is not null && 
-           categoryExists.Id != dto.Id && 
-           categoryExists.ParentCategoryId == dto.ParentCategoryId)
+           categoryExists.Id != dto.Id)
             throw new AppException($"Category {dto.Name} already exists");
         
 
