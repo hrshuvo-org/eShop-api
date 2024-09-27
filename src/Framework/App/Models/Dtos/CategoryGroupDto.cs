@@ -7,5 +7,5 @@ public class CategoryGroupDto
     
     // public long? ParentCategoryId { get; set; }
 
-    public List<CategoryGroupDto> CategoryList { get; set; }
+    public List<CategoryGroupDto> Children { get; set; }
 }

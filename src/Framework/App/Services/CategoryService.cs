@@ -167,7 +167,7 @@ public class CategoryService : BaseService<Category, long>, ICategoryService
             {
                 Id = c.Id,
                 Name = c.Name,
-                CategoryList = BuildCategoryHierarchy(categories, c.Id) // Recursively build the hierarchy for each child
+                Children = BuildCategoryHierarchy(categories, c.Id) // Recursively build the hierarchy for each child
             })
             .ToList();
     }

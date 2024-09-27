@@ -60,7 +60,7 @@ public class CategoriesController : BaseApiController
         return Ok("Category deleted");
     }
     
-    [HttpGet("categorygroups")]
+    [HttpGet("tree")]
     public async Task<IActionResult> GetCategoryGroups()
     {
         var result = await _categoryService.GetCategoryGroups();
