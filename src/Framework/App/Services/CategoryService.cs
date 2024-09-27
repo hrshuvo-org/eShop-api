@@ -3,6 +3,7 @@ using Framework.App.Models.Dtos;
 using Framework.App.Models.Entities;
 using Framework.App.Services.Interfaces;
 using Framework.Core.Exceptions;
+using Framework.Core.Models;
 using Framework.Core.Repositories.Interfaces;
 using Framework.Core.Services;
 using Framework.Core.Services.Interfaces;
@@ -133,4 +134,42 @@ public class CategoryService : BaseService<Category, long>, ICategoryService
         
         
     }
+
+    public async Task<List<CategoryGroupDto>> GetCategoryGroups()
+    {
+        Expression<Func<Category, bool>> query = c => c.Status == EntityStatus.Active;
+        
+        var categories = await LoadAsync(query);
+        
+        // var categoryGroups2 = categories
+        //     .GroupBy(c => c.ParentCategoryId)
+        //     .Select(g => new CategoryGroupDto()
+        //     {
+        //         Id = g.Key, 
+        //         Name = categories.FirstOrDefault(c => c.Id == g.Key)?.Name,
+        //         CategoryList = g.Select(c => new CategoryGroupDto()
+        //         {
+        //             Id = c.Id,
+        //             Name = c.Name
+        //         }).ToList()
+        //     }).ToList();
+
+        var categoryGroups = BuildCategoryHierarchy(categories, 0);
+                
+        return categoryGroups;
+    }
+    
+    private List<CategoryGroupDto> BuildCategoryHierarchy(List<Category> categories, long? parentId = null)
+    {
+        return categories
+            .Where(c => c.ParentCategoryId == parentId) // Find all categories with the current parentId
+            .Select(c => new CategoryGroupDto()
+            {
+                Id = c.Id,
+                Name = c.Name,
+                CategoryList = BuildCategoryHierarchy(categories, c.Id) // Recursively build the hierarchy for each child
+            })
+            .ToList();
+    }
+        
 }

@@ -7,4 +7,5 @@ namespace Framework.App.Services.Interfaces;
 public interface ICategoryService : IBaseService<Category, long>
 {
     Task Save(CategoryDto category);
+    Task<List<CategoryGroupDto>> GetCategoryGroups();
 }
