@@ -1,4 +1,3 @@
-using AutoMapper;
 using Framework.App.Models.Dtos;
 using Framework.App.Models.Entities;
 using Framework.App.Services.Interfaces;
@@ -16,8 +15,9 @@ public class CategoriesController : BaseApiController
     {
        _categoryService = categoryService;
     }
-    
-    
+
+    #region Categories
+
     [HttpGet]
     public async Task<IActionResult> GetCategories([FromQuery] ListParams param)
     {
@@ -29,10 +29,10 @@ public class CategoriesController : BaseApiController
         return Ok(dataToReturn);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id:long}")]
     public async Task<IActionResult> GetCategory(long id)
     {
-        var user = await _categoryService.GetAsync(id);
+        var user = await _categoryService.GetCategoryAsync(id);
         
         if (user is null)
             return NotFound("Category not found");
@@ -48,7 +48,7 @@ public class CategoriesController : BaseApiController
         return Ok();
     }
 
-    [HttpDelete("delete/{id}")]
+    [HttpDelete("delete/{id:long}")]
     public async Task<IActionResult> DeleteCategory(long id)
     {
         var category = await _categoryService.GetAsync(id);
@@ -67,6 +67,30 @@ public class CategoriesController : BaseApiController
         
         return Ok(result);
     }
+
+    #endregion
+
+
+    #region Variations
+
+    [HttpGet("variations/{categoryId:long}")]
+    public async Task<IActionResult> GetVariations(long categoryId)
+    {
+        var result = await _categoryService.LoadVariations(categoryId);
+
+        return Ok(result);
+    }
+    
+    [HttpGet("variation-options/{variationId:long}")]
+    public async Task<IActionResult> GetVariationOptions(long variationId)
+    {
+        var result = await _categoryService.LoadVariationOptions(variationId);
+
+        return Ok(result);
+    }
+
+    #endregion
+    
     
     
     
