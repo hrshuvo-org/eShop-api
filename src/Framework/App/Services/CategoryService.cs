@@ -192,6 +192,30 @@ public class CategoryService : BaseService<Category, long>, ICategoryService
             })
             .ToList();
     }
+    
+    public async Task<List<CategorySelectDto>> GetCategorySelectList()
+    {
+        Expression<Func<Category, bool>> query = c => c.Status == EntityStatus.Active;
+
+        var categories = await LoadAsync(query);
+
+        var categorySelectList = BuildCategorySelectHierarchy(categories, 0);
+
+        return categorySelectList;
+    }
+
+    private static List<CategorySelectDto> BuildCategorySelectHierarchy(List<Category> categories, long parentId)
+    {
+        return categories
+            .Where(c => c.ParentCategoryId == parentId) // Find all categories with the current parentId
+            .Select(c => new CategorySelectDto()
+            {
+                Id = c.Id,
+                Label = c.Name,
+                Children = BuildCategorySelectHierarchy(categories, c.Id) // Recursively build the hierarchy for each child
+            })
+            .ToList();
+    }
 
     #endregion
 

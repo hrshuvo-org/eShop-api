@@ -67,6 +67,14 @@ public class CategoriesController : BaseApiController
         
         return Ok(result);
     }
+    
+    [HttpGet("select-list")]
+    public async Task<IActionResult> GetCategorySelectList()
+    {
+        var result = await _categoryService.GetCategorySelectList();
+        
+        return Ok(result);
+    }
 
     #endregion
 
