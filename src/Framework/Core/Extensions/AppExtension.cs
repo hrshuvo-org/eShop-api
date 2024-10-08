@@ -26,7 +26,7 @@ public static class AppExtension
         {
             opt.AddPolicy("CorsPolicy", policy =>
             {
-                policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4201");
+                policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4201","http://localhost:4200");
             });
         });
 

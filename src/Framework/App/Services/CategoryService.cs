@@ -64,7 +64,7 @@ public class CategoryService : BaseService<Category, long>, ICategoryService
                 Id = dto.Id ?? 0,
                 Name = dto.Name,
                 Status = dto.Status,
-                ParentCategoryId = dto.ParentCategoryId ?? dto.ParentCategoryId!.Value
+                ParentCategoryId = dto.ParentCategoryId ?? 0
             };
 
             if (dto.ParentCategoryId is not null and not 0)
