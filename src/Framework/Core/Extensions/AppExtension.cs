@@ -53,7 +53,7 @@ public static class AppExtension
         #region Extend ApplicationServices
 
         services.AddIdentityServices(config);
-        await services.AddApplicationServices();
+        await services.AddApplicationServices(config);
         
 
         #endregion

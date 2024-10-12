@@ -13,4 +13,5 @@ public class ProductItem : BaseEntity<long>
     public decimal Price { get; set; }
 
     public string PhotoUrl { get; set; }
+    public List<Photo> Photos { get; set; } = [];
 }

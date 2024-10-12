@@ -6,8 +6,10 @@ using Framework.Repositories;
 using Framework.Repositories.Interfaces;
 using Framework.Services;
 using Framework.Services.Interfaces;
+using Framework.Settings;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -15,7 +17,7 @@ namespace Framework.Extension;
 
 public static class ApplicationServiceExtension
 {
-    public static async Task AddApplicationServices(this IServiceCollection services)
+    public static async Task AddApplicationServices(this IServiceCollection services, IConfiguration config)
     {
         #region Dependency Injection
         services.AddAutoMapper(typeof(MappingProfiles));
@@ -23,7 +25,7 @@ public static class ApplicationServiceExtension
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUserService, UserService>();
 
-
+        services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
 
         #endregion
 

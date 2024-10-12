@@ -1,3 +1,4 @@
+using Framework.App.Models.Entities;
 using Framework.App.Services.Interfaces;
 using Framework.Core.Controllers;
 using Framework.Core.Helpers.Pagination;
@@ -21,8 +22,11 @@ public class HomeController : BaseApiController
     [HttpGet]
     public async Task<IActionResult> Search([FromQuery] ListParams param)
     {
-        var products = await _productItemService.LoadAsync(param.Query);
+        var result = await _productItemService.LoadAsync(param.Query);
+
+        var dataToReturn = new Pagination<ProductItem>(result.CurrentPage, result.PageSize, result.TotalCount,
+            result.TotalPage, result);
         
-        return Ok(products);
+        return Ok(dataToReturn);
     }
 }

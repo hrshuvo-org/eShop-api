@@ -10,12 +10,14 @@ public class ProductsController : BaseApiController
 {
     private readonly IProductsService _productsService;
     private readonly IProductItemService _productItemService;
+    private readonly IPhotoService _photoService;
 
     public ProductsController(IProductsService productsService, 
-        IProductItemService productItemService)
+        IProductItemService productItemService, IPhotoService photoService)
     {
         _productsService = productsService;
         _productItemService = productItemService;
+        _photoService = photoService;
     }
     
     
@@ -141,6 +143,14 @@ public class ProductsController : BaseApiController
 
 
     #endregion
+    
+    [HttpPost("add-photo")]
+    public async Task<ActionResult> AddPhoto(IFormFile file, long productItemId)
+    {
+        await _productItemService.AddPhotoAsync(file, productItemId);
+
+        return Ok();
+    }
     
     
 }

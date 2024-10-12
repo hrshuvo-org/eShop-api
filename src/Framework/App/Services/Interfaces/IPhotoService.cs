@@ -1,10 +1,11 @@
+using CloudinaryDotNet.Actions;
 using Framework.App.Models.Entities;
 using Framework.Core.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 
 namespace Framework.App.Services.Interfaces;
 
-public interface IProductItemService : IBaseService<ProductItem, long>
+public interface IPhotoService : IBaseService<Photo, long>
 {
-    Task AddPhotoAsync(IFormFile file, long productItemId);
+    Task<ImageUploadResult> AddPhotoAsync(IFormFile file);
 }

@@ -15,6 +15,7 @@ public static class AppServiceExtensions
         services.AddScoped<ICategoryService, CategoryService>();
         services.AddScoped<IProductsService, ProductsService>();
         services.AddScoped<IProductItemService, ProductItemService>();
+        services.AddScoped<IPhotoService, PhotoService>();
 
 
         #endregion

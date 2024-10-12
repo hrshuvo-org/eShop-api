@@ -72,6 +72,13 @@ public abstract class AppModelBuilder
 
 
         #endregion
+        
+        builder.Entity<Photo>(b =>
+        {
+            b.ToTable(SetTableName("photos"));
+            b.Property(e => e.Url).HasMaxLength(250);
+            b.Property(e => e.PublicId).HasMaxLength(100);
+        });
 
 
 
