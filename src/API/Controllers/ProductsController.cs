@@ -159,6 +159,14 @@ public class ProductsController : BaseApiController
 
         return Ok(photo);
     }
+
+    [HttpGet("set-main-photo/{id:long}/{photoId:long}")]
+    public async Task<IActionResult> SetMainPhoto(long id, long photoId)
+    {
+        await _productItemService.SetMainPhoto(id, photoId);
+
+        return Ok();
+    }
     
     
     

@@ -47,8 +47,26 @@ public class ProductItemService : BaseService<ProductItem, long>, IProductItemSe
 
         return photo;
     }
-    
-    
-    
-    
+
+    public async Task SetMainPhoto(long id, long photoId)
+    {
+        var item = await GetAsync(id);
+        if (item is null)
+            throw new AppException(404, "Product item not found");
+        
+        var photo = await _photoService.GetAsync(photoId);
+        if (photo is null)
+            throw new AppException(404, "Photo not found");
+        
+        var currentMain = await _photoService.GetAsync(p => p.IsMain && p.ProductItemId == id);
+        
+        if (currentMain is not null)
+            currentMain.IsMain = false;
+        
+        photo.IsMain = true;
+        item.PhotoUrl = photo.Url;
+        
+        await _photoService.UpdateAsync(photo);
+        await UpdateAsync(item);
+    }
 }
