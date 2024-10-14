@@ -6,5 +6,5 @@ namespace Framework.App.Services.Interfaces;
 
 public interface IProductItemService : IBaseService<ProductItem, long>
 {
-    Task AddPhotoAsync(IFormFile file, long productItemId);
+    Task<Photo> AddPhotoAsync(IFormFile file, long productItemId);
 }

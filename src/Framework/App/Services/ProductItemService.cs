@@ -16,7 +16,7 @@ public class ProductItemService : BaseService<ProductItem, long>, IProductItemSe
         _photoService = photoService;
     }
 
-    public async Task AddPhotoAsync(IFormFile file, long productItemId)
+    public async Task<Photo> AddPhotoAsync(IFormFile file, long productItemId)
     {
         var item = await GetAsync(productItemId);
         if (item is null)
@@ -45,6 +45,7 @@ public class ProductItemService : BaseService<ProductItem, long>, IProductItemSe
         item.Photos.Add(photo);
         await UpdateAsync(item);
 
+        return photo;
     }
     
     

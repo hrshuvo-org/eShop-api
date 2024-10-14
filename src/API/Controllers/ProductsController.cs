@@ -143,14 +143,24 @@ public class ProductsController : BaseApiController
 
 
     #endregion
+
+    [HttpGet("photos/{id:long}")]
+    public async Task<IActionResult> GetPhotos(long id)
+    {
+        var result = await _photoService.LoadAsync(i => i.ProductItemId == id);
+
+        return Ok(result);
+    }
     
     [HttpPost("add-photo")]
-    public async Task<ActionResult> AddPhoto(IFormFile file, long productItemId)
+    public async Task<IActionResult> AddPhoto(IFormFile file, long id)
     {
-        await _productItemService.AddPhotoAsync(file, productItemId);
+        var photo = await _productItemService.AddPhotoAsync(file, id);
 
-        return Ok();
+        return Ok(photo);
     }
+    
+    
     
     
 }
