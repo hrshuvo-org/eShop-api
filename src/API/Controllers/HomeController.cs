@@ -8,14 +8,12 @@ namespace API.Controllers;
 
 public class HomeController : BaseApiController
 {
-    private readonly IProductsService _productsService;
     private readonly IProductItemService _productItemService;
-    private readonly ICategoryService _categoryService;
-
-    public HomeController(IProductsService productsService, ICategoryService categoryService, IProductItemService productItemService)
+    private readonly ISearchService _searchService;
+    
+    public HomeController(ISearchService searchService, IProductItemService productItemService)
     {
-        _productsService = productsService;
-        _categoryService = categoryService;
+        _searchService = searchService;
         _productItemService = productItemService;
     }
     
@@ -23,10 +21,18 @@ public class HomeController : BaseApiController
     public async Task<IActionResult> Search([FromQuery] ListParams param)
     {
         var result = await _productItemService.LoadAsync(param.Query);
-
+    
         var dataToReturn = new Pagination<ProductItem>(result.CurrentPage, result.PageSize, result.TotalCount,
             result.TotalPage, result);
         
         return Ok(dataToReturn);
+    }
+    
+    [HttpGet("items")]
+    public async Task<IActionResult> Search([FromQuery] ListParams param, [FromQuery] long[] categoryIds, [FromQuery] long[] variationIds, [FromQuery] long[] optionIds)
+    {
+        var result = await _searchService.SearchAsync(param, categoryIds, variationIds, optionIds);
+        
+        return Ok(result);
     }
 }
