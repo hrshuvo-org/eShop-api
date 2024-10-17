@@ -54,6 +54,7 @@ public abstract class AppModelBuilder
             b.Property(e => e.Name).IsRequired().HasMaxLength(250);
             
             b.Property(e => e.Product).HasMaxLength(250);   
+            b.Property(e => e.Description).HasMaxLength(250);   
             b.Property(e => e.Sku).HasMaxLength(100);
             
             b.Property(e => e.PhotoUrl).HasMaxLength(250);
